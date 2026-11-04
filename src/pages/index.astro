@@ -1,94 +1,91 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { hotelInfo, menuCategories } from "../data/hotelData";
+import {
+  hotelInfo,
+  roomCategories,
+  inRoomAmenities,
+  hotelFacilities,
+  signatureDishesPreview,
+} from "../data/hotelData";
 
 const location = `${hotelInfo.city}, ${hotelInfo.region}, ${hotelInfo.country}`;
 const whatsappUrl = (message: string) =>
   `https://wa.me/${hotelInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
-const menuOrderUrl = (itemName: string, price: string) =>
-  whatsappUrl(`Hello Kas Classic Hotel, I would like to order ${itemName} (TZS ${price}). Please confirm availability.`);
+
+const availabilityEn = whatsappUrl("Hello Kas Classic Hotel, please share room options, rates and availability for my dates.");
+const availabilitySw = whatsappUrl("Habari Kas Classic Hotel, naomba kufahamu chaguo za vyumba, bei na upatikanaji kwa tarehe zangu.");
+const contactEn = whatsappUrl("Hello Kas Classic Hotel, I would like to get in touch.");
+const contactSw = whatsappUrl("Habari Kas Classic Hotel, ningependa kuwasiliana nanyi.");
+const eventHostEn = whatsappUrl("Hello Kas Classic Hotel, I would like to enquire about hosting a private or poolside event.");
+const eventHostSw = whatsappUrl("Habari Kas Classic Hotel, ningependa kuuliza kuhusu kuandaa tukio au sherehe hotelini.");
+
 const roomPhotos = [
   {
-    src: "/images/hotel/stay-bedroom-storage.webp",
-    alt: "Bright bedroom with a bed, television, storage and bathroom entrance at Kas Classic Hotel",
-    en: "A bright bedroom with a bed, television, storage and bathroom entrance.",
-    sw: "Chumba chenye mwanga, kitanda, televisheni, kabati na mlango wa bafu.",
-  },
-  {
     src: "/images/hotel/stay-bedroom-headboard.webp",
-    alt: "Bedroom with a large bed, upholstered headboard and seating at Kas Classic Hotel",
-    en: "A bedroom with a large bed, upholstered headboard and seating.",
-    sw: "Chumba chenye kitanda kikubwa, ubao wa kitanda uliopambwa na viti.",
-  },
-  {
-    src: "/images/hotel/stay-bedroom-tv.webp",
-    alt: "A second view of a bedroom with a bed and television at Kas Classic Hotel",
-    en: "Another view of a bedroom with a bed, television and bathroom entrance.",
-    sw: "Mwonekano mwingine wa chumba chenye kitanda, televisheni na mlango wa bafu.",
+    alt: "Deluxe bedroom with tall upholstered headboard, vanity mirror and lounge chair at Kas Classic Hotel",
+    en: "Deluxe King/Double bedroom with upholstered headboard, crystal vanity mirror and armchair.",
+    sw: "Chumba cha Deluxe chenye kitanda kikubwa, kioo cha kujipamba na kiti cha kupumzikia.",
   },
   {
     src: "/images/hotel/stay-bedroom-dressing.webp",
-    alt: "Bedroom with a bed, television, dressing table and sitting area at Kas Classic Hotel",
-    en: "A bedroom with a bed, television, dressing table and sitting area.",
-    sw: "Chumba chenye kitanda, televisheni, meza ya kujipamba na sehemu ya kukaa.",
+    alt: "Bedroom with air conditioning, 43-inch TV, digital safe, wardrobe and en-suite bathroom",
+    en: "Equipped with air conditioning (AC), 43\" TV, digital safe box, wardrobe and en-suite bath.",
+    sw: "Kina kiyoyozi (AC), TV ya inchi 43, kasiki ya kidijitali (safe), kabati na bafu ndani.",
   },
   {
     src: "/images/hotel/stay-twin-beds.webp",
-    alt: "Room with two beds and bedside lighting at Kas Classic Hotel",
-    en: "A room arranged with two beds and bedside lighting.",
-    sw: "Chumba chenye vitanda viwili na taa za pembeni ya kitanda.",
+    alt: "Twin room with two beds, ambient under-bed lighting and tea trays at Kas Classic Hotel",
+    en: "Classic Twin Room arranged with two beds, warm ambient LED lighting and bedside tea service.",
+    sw: "Chumba cha Twin chenye vitanda viwili, mwanga tulivu wa LED na huduma ya chai chumbani.",
+  },
+  {
+    src: "/images/hotel/stay-bedroom-storage.webp",
+    alt: "Bright bedroom showing mini-fridge, flat-screen TV, storage and en-suite bathroom entrance",
+    en: "Bright room layout featuring an in-room mini-fridge, flat-screen TV and private hot-water bathroom.",
+    sw: "Chumba chenye mwanga, friji ndogo ndani, televisheni na bafu lenye maji ya moto.",
+  },
+  {
+    src: "/images/hotel/stay-bedroom-tv.webp",
+    alt: "Another bedroom view with bed, television and bathroom entrance at Kas Classic Hotel",
+    en: "Clean, quiet and self-contained accommodation designed for restful stays in Makambako.",
+    sw: "Vyumba safi na tulivu vyenye kila kitu ndani kwa mapumziko bora mjini Makambako.",
   },
 ];
-const poolPhotos = [
+
+const hotelPhotos = [
   {
-    src: "/images/hotel/pool-01.jpg",
-    enTitle: "Poolside seating",
-    swTitle: "Sehemu ya kukaa kando ya bwawa",
-    enDetail: "A view across the outdoor pool, lounge chairs and shaded seating.",
-    swDetail: "Mwonekano wa bwawa la nje, viti vya kupumzikia na sehemu yenye kivuli.",
-  },
-  {
-    src: "/images/hotel/pool-02.jpg",
-    enTitle: "The pool from above",
-    swTitle: "Bwawa kwa mwonekano wa juu",
-    enDetail: "An overhead view of the pool and its surrounding seating area.",
-    swDetail: "Mwonekano wa juu wa bwawa na sehemu za kukaa zinazolizunguka.",
+    src: "/images/hotel/pool-04.jpg",
+    alt: "Aerial view of the Kas Classic Hotel heated swimming pool, sunken lounge and cabanas",
+    enTitle: "Hot Swimming Pool & Sunken Lounge",
+    swTitle: "Bwawa la Maji ya Moto na Mapumziko",
+    enDetail: "Heated outdoor pool · Sunken seating & cabanas",
+    swDetail: "Bwawa la maji ya moto · Masofa na sehemu ya kupumzikia",
   },
   {
     src: "/images/hotel/pool-05.jpg",
-    enTitle: "Swimming pool",
-    swTitle: "Bwawa la kuogelea",
-    enDetail: "A closer look at the pool water and surrounding lounge area.",
-    swDetail: "Mwonekano wa karibu wa maji ya bwawa na sehemu ya kupumzikia.",
-  },
-];
-const hotelHighlights = [
-  {
-    src: "/images/hotel/outside-01.jpg",
-    enTitle: "The Kas Classic landmark",
-    swTitle: "Jengo maarufu la Kas Classic",
-    enDetail: "A wide exterior view of the hotel, with gym and honeymoon room signs visible.",
-    swDetail: "Mwonekano mpana wa hoteli, huku alama za gym na chumba cha fungate zikionekana.",
-    message: "Please share directions and current information about the hotel and its on-site services.",
+    alt: "Evening poolside view with underwater LED lighting and sun loungers at Kas Classic Hotel",
+    enTitle: "Evening Poolside Atmosphere",
+    swTitle: "Mandhari ya Bwawa Wakati wa Jioni",
+    enDetail: "Underwater LED lighting & poolside seating",
+    swDetail: "Taa za ndani ya maji na viti vya kupumzikia",
   },
   {
     src: "/images/hotel/outside-05.jpg",
-    enTitle: "Restaurant entrance",
-    swTitle: "Mlango wa mgahawa",
-    enDetail: "The exterior photo shows the restaurant entrance at the hotel.",
-    swDetail: "Picha ya nje inaonyesha mlango wa mgahawa wa hoteli.",
-    message: "Please share the restaurant menu and current opening hours.",
+    alt: "Restaurant entrance and two-story bamboo Fruit Juice pavilion at Kas Classic Hotel",
+    enTitle: "Restaurant & Fruit Juice Pavilion",
+    swTitle: "Mgahawa na Banda la Ghorofa la Juisi",
+    enDetail: "Main dining hall & fresh juice bar",
+    swDetail: "Mgahawa mkuu na banda la juisi safi",
   },
   {
     src: "/images/hotel/outside-06.jpg",
-    enTitle: "Services listed at the hotel",
-    swTitle: "Huduma zilizoandikwa kwenye bango",
-    enDetail: "The roadside sign lists accommodation, pool, restaurants, gym, mini shop and mini bank. Ask which are currently available.",
-    swDetail: "Bango la barabarani linaorodhesha malazi, bwawa, migahawa, gym, duka na mini bank. Uliza huduma zinazopatikana sasa.",
-    message: "Please confirm which facilities and services shown on the hotel sign are currently available.",
+    alt: "Kas Classic Hotel main signpost and spacious cabro-paved parking courtyard in Makambako",
+    enTitle: "Main Entrance & Paved Parking Courtyard",
+    swTitle: "Lango Kuu na Maegesho Makubwa ya Magari",
+    enDetail: "Makambako, Njombe Region",
+    swDetail: "Makambako, Mkoa wa Njombe",
   },
 ];
-const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in touch.");
 ---
 
 <Layout>
@@ -103,11 +100,10 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
         {location}
       </p>
-      <a class="topbar-link" href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">
-        <span data-i18n="en">Follow us on Instagram</span>
-        <span data-i18n="sw">Tufuate Instagram</span>
-        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-      </a>
+      <p class="topbar-message">
+        <span data-i18n="en">Direct Hotel Contacts: {hotelInfo.phoneDisplay} · {hotelInfo.secondaryPhone}</span>
+        <span data-i18n="sw">Mawasiliano ya Moja kwa Moja: {hotelInfo.phoneDisplay} · {hotelInfo.secondaryPhone}</span>
+      </p>
     </div>
   </div>
 
@@ -125,11 +121,22 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
       </button>
 
       <nav class="main-nav" id="primary-navigation" aria-label="Main navigation">
-        <a href="#stay"><span data-i18n="en">Accommodation</span><span data-i18n="sw">Malazi</span></a>
-        <a href="#discover"><span data-i18n="en">Facilities</span><span data-i18n="sw">Huduma</span></a>
-        <a href="#menu"><span data-i18n="en">Menu</span><span data-i18n="sw">Menyu</span></a>
+        <a href="#stay"><span data-i18n="en">Rooms &amp; Stay</span><span data-i18n="sw">Vyumba &amp; Malazi</span></a>
+        <a href="#discover"><span data-i18n="en">Pool, Gym &amp; Facilities</span><span data-i18n="sw">Bwawa, Gym &amp; Huduma</span></a>
+        <a href="/menu/"><span data-i18n="en">Menu</span><span data-i18n="sw">Menyu</span></a>
+        <a href="#events"><span data-i18n="en">Events &amp; Packages</span><span data-i18n="sw">Matukio &amp; Vifurushi</span></a>
         <a href="#visit"><span data-i18n="en">Find us</span><span data-i18n="sw">Mahali</span></a>
-        <a href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">Instagram <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></a>
+        <a class="instagram-link" href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.7" cy="6.8" r=".8" fill="currentColor" stroke="none" /></svg>
+        </a>
+        <a
+          class="button button-small button-red mobile-nav-cta"
+          href="#book-bar"
+        >
+          <span data-i18n="en">Book / Check availability</span>
+          <span data-i18n="sw">Weka nafasi / Uliza</span>
+          <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
       </nav>
 
       <div class="header-actions">
@@ -137,9 +144,12 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
           <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
           <button type="button" data-set-lang="sw" aria-pressed="false">SW</button>
         </div>
-        <a class="button button-small button-red" href={contactUrl} target="_blank" rel="noopener noreferrer">
-          <span data-i18n="en">Get in touch</span>
-          <span data-i18n="sw">Wasiliana</span>
+        <a
+          class="button button-small button-red"
+          href="#book-bar"
+        >
+          <span data-i18n="en">Check availability</span>
+          <span data-i18n="sw">Uliza upatikanaji</span>
           <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </a>
       </div>
@@ -147,334 +157,606 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
   </header>
 
   <main id="main">
+    <!-- 1. Hero Section with Verified Hotel Highlights -->
     <section class="hero" id="home" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow eyebrow-light"><span class="eyebrow-dot"></span>
-            <span data-i18n="en">Kas Classic Hotel · Makambako</span>
-            <span data-i18n="sw">Karibu Makambako</span>
+          <p class="eyebrow eyebrow-light">
+            <span class="eyebrow-dot"></span>
+            <span data-i18n="en">Accommodation · Hot Pool · Gym · Dining in Makambako</span>
+            <span data-i18n="sw">Malazi · Bwawa la Maji ya Moto · Gym · Mgahawa Makambako</span>
           </p>
           <h1 id="hero-title">
-            <span data-i18n="en">Stay, swim<br />and <em>unwind.</em></span>
-            <span data-i18n="sw">Lala, oga<br />na <em>pumzika.</em></span>
+            <span data-i18n="en">Stay at <em>Kas Classic Hotel.</em></span>
+            <span data-i18n="sw">Karibu <em>Kas Classic Hotel.</em></span>
           </h1>
           <p class="hero-description">
-            <span data-i18n="en">Explore hotel accommodation, the outdoor pool, restaurant and more at Kas Classic Hotel.</span>
-            <span data-i18n="sw">Gundua malazi, bwawa la nje, mgahawa na huduma nyingine katika Kas Classic Hotel.</span>
+            <span data-i18n="en">Your complete hospitality destination in Makambako. Enjoy air-conditioned rooms, a Honeymoon suite, heated swimming pool, upper-level gym, restaurant, Nyama Choma, fresh juice pavilion, and on-site Mini Bank &amp; Mini Shop.</span>
+            <span data-i18n="sw">Kituo chako kamili cha malazi na mapumziko mjini Makambako. Furahia vyumba vyenye AC, Honeymoon Suite, bwawa la kuogelea la maji ya moto, Gym, mgahawa, Nyama Choma, banda la juisi pamoja na Mini Bank na Mini Shop.</span>
           </p>
+
+          <div class="hero-badges" aria-label="Key hotel features">
+            <span class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 15c1.7-1.5 3.3-1.5 5 0s3.3 1.5 5 0 3.3-1.5 5 0 3.3 1.5 5 0"/><path d="M2 19c1.7-1.5 3.3-1.5 5 0s3.3 1.5 5 0 3.3-1.5 5 0 3.3 1.5 5 0"/><path d="M12 3c1.5 2 2.5 3.8 2.5 5.5a2.5 2.5 0 1 1-5 0C9.5 6.8 10.5 5 12 3Z"/></svg>
+              <span data-i18n="en">Hot Swimming Pool</span><span data-i18n="sw">Bwawa la Maji ya Moto</span>
+            </span>
+            <span class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/></svg>
+              <span data-i18n="en">AC &amp; En-Suite Rooms</span><span data-i18n="sw">Vyumba Vyenye AC</span>
+            </span>
+            <span class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A5 5 0 1 1 12 6a5 5 0 1 1 7.5 6.6Z"/></svg>
+              <span data-i18n="en">Honeymoon Room</span><span data-i18n="sw">Chumba cha Honeymoon</span>
+            </span>
+            <span class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>
+              <span data-i18n="en">Fitness Gym</span><span data-i18n="sw">Gym ya Mazoezi</span>
+            </span>
+            <span class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2v7c0 1.7 1.3 3 3 3v10M6 2v20M9 2v7c0 1.7-1.3 3-3 3"/><path d="M18 2v20M18 2c-2.8 0-4 2.5-4 6v4h4"/></svg>
+              <span data-i18n="en">Nyama Choma &amp; Juice Bar</span><span data-i18n="sw">Nyama Choma &amp; Juisi</span>
+            </span>
+          </div>
+
           <div class="hero-actions">
-            <a class="button button-orange" href={whatsappUrl("Hello Kas Classic Hotel, please share room rates and availability for my dates.")} target="_blank" rel="noopener noreferrer">
-              <span data-i18n="en">Ask about a stay</span>
-              <span data-i18n="sw">Uliza kuhusu malazi</span>
+            <a
+              class="button button-red"
+              href="#book-bar"
+            >
+              <span data-i18n="en">Reserve / Check Dates</span>
+              <span data-i18n="sw">Weka Nafasi / Chagua Tarehe</span>
               <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
             </a>
-            <a class="button button-ghost" href="#stay">
-              <span data-i18n="en">View accommodation</span>
-              <span data-i18n="sw">Tazama malazi</span>
-              <svg class="icon-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7 7 7 7-7" /></svg>
+            <a class="button button-ghost" href="/menu/">
+              <span data-i18n="en">Explore Food &amp; Juice Menu</span>
+              <span data-i18n="sw">Tazama Menyu ya Chakula</span>
             </a>
           </div>
-          <div class="hero-note">
-            <span class="hero-note-rule"></span>
-            <span data-i18n="en">Makambako Town · Njombe, Tanzania</span>
-            <span data-i18n="sw">Makambako · Njombe, Tanzania</span>
-          </div>
+          <p class="hero-note">
+            <span data-i18n="en">Direct hotel lines: {hotelInfo.phoneDisplay} / {hotelInfo.secondaryPhone}</span>
+            <span data-i18n="sw">Simu za moja kwa moja hotelini: {hotelInfo.phoneDisplay} / {hotelInfo.secondaryPhone}</span>
+          </p>
         </div>
-
-        <div class="hero-art">
+        <figure class="hero-art">
           <img
+            class="hero-art-img"
             src="/images/hotel/outside-01.jpg"
-            alt="Kas Classic Hotel exterior in Makambako, with the hotel and adjoining shops visible"
+            alt="Kas Classic Hotel building in Makambako showing main rooms, Honeymoon wing and rooftop gym"
             fetchpriority="high"
           />
-          <div class="hero-photo-caption">
-            <span data-i18n="en">THE KAS CLASSIC EXPERIENCE</span>
-            <span data-i18n="sw">KARIBU KAS CLASSIC</span>
-            <b>MAKAMBAKO · TANZANIA</b>
-          </div>
-        </div>
-      </div>
-      <a class="scroll-cue" href="#story" aria-label="Scroll to hotel overview"><span></span></a>
-    </section>
-
-    <section class="intro-section section-pad" id="story">
-      <div class="shell intro-grid">
-        <div class="intro-heading">
-          <p class="eyebrow"><span class="eyebrow-dot"></span>
-            <span data-i18n="en">More than a place to sleep</span>
-            <span data-i18n="sw">Zaidi ya sehemu ya kulala</span>
-          </p>
-          <h2>
-            <span data-i18n="en">Make your stay<br />in <em>Makambako.</em></span>
-            <span data-i18n="sw">Furahia ukaaji<br /><em>Makambako.</em></span>
-          </h2>
-        </div>
-        <div class="intro-copy">
-          <p>
-            <span data-i18n="en">See the rooms, outdoor pool and hotel surroundings in the photos below. Contact the hotel to confirm current rates, access and availability.</span>
-            <span data-i18n="sw">Tazama vyumba, bwawa la nje na mazingira ya hoteli kwenye picha hapa chini. Wasiliana na hoteli kuthibitisha bei, huduma na upatikanaji.</span>
-          </p>
-          <a class="text-link" href="#discover">
-            <span data-i18n="en">Explore the facilities</span>
-            <span data-i18n="sw">Gundua huduma</span>
-            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-          </a>
-        </div>
+        </figure>
       </div>
     </section>
 
+    <!-- 2. Interactive Quick Availability & WhatsApp Booking Bar -->
+    <div class="booking-bar-wrap" id="book-bar">
+      <div class="shell">
+        <div class="booking-bar">
+          <form class="booking-bar-form" id="quickBookingForm">
+            <div class="booking-field">
+              <label for="bookCheckIn">
+                <span data-i18n="en">Check-In Date</span>
+                <span data-i18n="sw">Tarehe ya Kuingia</span>
+              </label>
+              <input type="date" id="bookCheckIn" required />
+            </div>
+            <div class="booking-field">
+              <label for="bookCheckOut">
+                <span data-i18n="en">Check-Out Date</span>
+                <span data-i18n="sw">Tarehe ya Kuondoka</span>
+              </label>
+              <input type="date" id="bookCheckOut" required />
+            </div>
+            <div class="booking-field">
+              <label for="bookRoomType">
+                <span data-i18n="en">Room Category</span>
+                <span data-i18n="sw">Aina ya Chumba</span>
+              </label>
+              <select id="bookRoomType">
+                <option value="Deluxe King / Double Room" data-label-en="Deluxe King / Double Room" data-label-sw="Chumba cha Deluxe (King / Double)">Deluxe King / Double Room</option>
+                <option value="Classic Twin Room (2 Beds)" data-label-en="Classic Twin Room (2 Beds)" data-label-sw="Chumba cha Twin (Vitanda 2)">Classic Twin Room (2 Beds)</option>
+                <option value="Honeymoon & VIP Room" data-label-en="Honeymoon & VIP Room" data-label-sw="Chumba cha Honeymoon & VIP">Honeymoon &amp; VIP Room</option>
+                <option value="Multiple Rooms / Group Booking" data-label-en="Multiple Rooms / Group" data-label-sw="Vyumba Vingi / Kikundi">Multiple Rooms / Group</option>
+              </select>
+            </div>
+            <div class="booking-field">
+              <label for="bookGuests">
+                <span data-i18n="en">Guests</span>
+                <span data-i18n="sw">Idadi ya Wageni</span>
+              </label>
+              <select id="bookGuests">
+                <option value="1 Guest" data-label-en="1 Guest" data-label-sw="Mgeni 1">1 Guest</option>
+                <option value="2 Guests" data-label-en="2 Guests" data-label-sw="Wageni 2" selected>2 Guests</option>
+                <option value="3-4 Guests" data-label-en="3–4 Guests" data-label-sw="Wageni 3–4">3–4 Guests</option>
+                <option value="5+ Group" data-label-en="5+ Guests (Group)" data-label-sw="Wageni 5+ (Kikundi)">5+ Guests (Group)</option>
+              </select>
+            </div>
+            <button type="submit" class="button button-red booking-bar-submit">
+              <span data-i18n="en">Inquire on WhatsApp</span>
+              <span data-i18n="sw">Tuma Maombi WhatsApp</span>
+              <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Accommodation Section: Real Room Carousel + In-Room Amenities + 3 Room Category Cards -->
     <section class="stay-section section-pad" id="stay">
       <div class="shell">
-        <div class="section-heading">
-          <div>
+        <div class="stay-feature">
+          <div class="stay-feature-image" data-room-carousel tabindex="0" role="region" aria-roledescription="carousel" aria-label="Accommodation photos" data-label-en="Accommodation photos" data-label-sw="Picha za malazi">
+            <div class="stay-carousel-stage" aria-live="off">
+              <div class="stay-carousel-track">
+                {roomPhotos.map((photo, index) => (
+                  <figure
+                    class:list={["stay-carousel-slide", { "is-active": index === 0 }]}
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={`${index + 1} of ${roomPhotos.length}`}
+                    aria-hidden={index !== 0}
+                  >
+                    <img src={photo.src} alt={photo.alt} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                    <figcaption>
+                      <span data-i18n="en">{photo.en}</span>
+                      <span data-i18n="sw">{photo.sw}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <button class="stay-carousel-arrow prev" type="button" aria-label="Previous room photo" data-label-en="Previous room photo" data-label-sw="Picha ya chumba iliyotangulia">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <button class="stay-carousel-arrow next" type="button" aria-label="Next room photo" data-label-en="Next room photo" data-label-sw="Picha ya chumba inayofuata">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </div>
+            <div class="stay-carousel-footer">
+              <div class="stay-carousel-dots" role="group" aria-label="Choose a room photo" data-label-en="Choose a room photo" data-label-sw="Chagua picha ya chumba">
+                {roomPhotos.map((_photo, index) => (
+                  <button
+                    class="stay-carousel-dot"
+                    type="button"
+                    aria-label={`Show room photo ${index + 1}`}
+                    aria-current={index === 0 ? "true" : "false"}
+                    data-label-en={`Show room photo ${index + 1}`}
+                    data-label-sw={`Onyesha picha ya chumba ${index + 1}`}
+                    data-go={index}
+                  ></button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="stay-feature-copy">
             <p class="eyebrow"><span class="eyebrow-dot"></span>
-              <span data-i18n="en">Accommodation</span>
-              <span data-i18n="sw">Malazi</span>
+              <span data-i18n="en">Inside Our Rooms</span>
+              <span data-i18n="sw">Ndani ya Vyumba Vyetu</span>
             </p>
             <h2>
-              <span data-i18n="en">Find your room<br /><em>at Kas Classic.</em></span>
-              <span data-i18n="sw">Chagua chumba<br /><em>Kas Classic.</em></span>
+              <span data-i18n="en">Modern comfort<br /><em>built in.</em></span>
+              <span data-i18n="sw">Starehe ya kisasa<br /><em>ndani ya chumba.</em></span>
             </h2>
-          </div>
-          <div class="section-heading-action">
-            <p class="section-heading-note">
-              <span data-i18n="en">Real room photos from the hotel's Instagram. Ask the hotel about rates and availability for your dates.</span>
-              <span data-i18n="sw">Picha halisi za vyumba kutoka Instagram ya hoteli. Uliza hoteli kuhusu bei na upatikanaji wa tarehe zako.</span>
+            <p>
+              <span data-i18n="en">Every room at Kas Classic Hotel is thoughtfully furnished with modern conveniences—from climate control and a digital safe to a mini-fridge, electric tea kettle, and private hot shower.</span>
+              <span data-i18n="sw">Kila chumba katika Kas Classic Hotel kimewekewa vifaa vya kisasa—kuanzia kiyoyozi (AC), kasiki ya kidijitali (safe), friji ndogo, birika la chai hadi bafu lenye maji ya moto.</span>
             </p>
-            <a class="button button-red" href={whatsappUrl("Hello Kas Classic Hotel, please share your room rates and availability for my dates.")} target="_blank" rel="noopener noreferrer">
-              <span data-i18n="en">Ask about a stay</span>
-              <span data-i18n="sw">Uliza kuhusu malazi</span>
-              <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-            </a>
-            <a class="text-link room-source-link" href={hotelInfo.instagram.post.url} target="_blank" rel="noopener noreferrer">
-              <span data-i18n="en">See all five photos in the original Instagram post</span>
-              <span data-i18n="sw">Tazama picha zote tano kwenye chapisho la Instagram</span>
-              <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-            </a>
-          </div>
-        </div>
 
-        <div class="experience-grid room-grid">
-          {roomPhotos.map((photo) => (
+            <ul class="amenity-pills" aria-label="In-room amenities">
+              {inRoomAmenities.map((item) => (
+                <li class="amenity-pill">
+                  <span class="amenity-icon" aria-hidden="true">
+                    {item.iconId === "ac" && (
+                      <svg viewBox="0 0 24 24"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/></svg>
+                    )}
+                    {item.iconId === "shower" && (
+                      <svg viewBox="0 0 24 24"><path d="M4 4v5a6 6 0 0 1 12 0H4ZM10 4V2M7 13v2M11 13v2M15 13v2M8 18v2M12 18v2"/></svg>
+                    )}
+                    {item.iconId === "tv" && (
+                      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
+                    )}
+                    {item.iconId === "safe" && (
+                      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 9V7M15 12h2M6 20v2M18 20v2"/></svg>
+                    )}
+                    {item.iconId === "fridge" && (
+                      <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M5 10h14M8 6v2M8 13v3"/></svg>
+                    )}
+                    {item.iconId === "kettle" && (
+                      <svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8Z"/><path d="M6 2v3M10 2v3M14 2v3"/></svg>
+                    )}
+                    {item.iconId === "phone" && (
+                      <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7A2 2 0 0 1 22 16.9Z"/></svg>
+                    )}
+                    {item.iconId === "vanity" && (
+                      <svg viewBox="0 0 24 24"><ellipse cx="12" cy="10" rx="6" ry="7"/><path d="M6 21h12M9 17v4M15 17v4M10 7l4 4"/></svg>
+                    )}
+                  </span>
+                  <span data-i18n="en">{item.en}</span>
+                  <span data-i18n="sw">{item.sw}</span>
+                </li>
+              ))}
+            </ul>
+
             <a
-              class="experience-card"
-              href={whatsappUrl("Hello Kas Classic Hotel, please share your room options, rates and availability for my dates.")}
+              class="button button-red"
+              href={availabilityEn}
+              data-wa-en={availabilityEn}
+              data-wa-sw={availabilitySw}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div class="experience-card-image">
-                <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
-                <span class="experience-card-arrow" aria-hidden="true"><svg class="icon-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
-              </div>
-              <div class="experience-card-copy">
-                <p>
-                  <span data-i18n="en">{photo.en}</span>
-                  <span data-i18n="sw">{photo.sw}</span>
-                </p>
-                <span class="experience-card-action">
-                  <span data-i18n="en">Ask about rates &amp; availability</span>
-                  <span data-i18n="sw">Uliza kuhusu bei na upatikanaji</span>
-                  <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+              <span data-i18n="en">Ask about room rates</span>
+              <span data-i18n="sw">Uliza bei za vyumba</span>
+              <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Room Categories Breakdown Cards -->
+        <div class="room-cards-header">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span>
+              <span data-i18n="en">Room Options</span>
+              <span data-i18n="sw">Chaguo za Vyumba</span>
+            </p>
+            <h3>
+              <span data-i18n="en">Choose your room style</span>
+              <span data-i18n="sw">Chagua aina ya chumba chako</span>
+            </h3>
+          </div>
+          <p>
+            <span data-i18n="en">Select a room below to pre-fill your availability enquiry.</span>
+            <span data-i18n="sw">Bofya chumba hapa chini kuomba nafasi na bei za tarehe zako.</span>
+          </p>
+        </div>
+
+        <div class="room-cards-grid">
+          {roomCategories.map((room) => (
+            <article class="room-card">
+              <div class="room-card-media">
+                <img src={room.image} alt={room.nameEn} loading="lazy" decoding="async" />
+                <span class="room-card-badge">
+                  <span data-i18n="en">{room.badgeEn}</span>
+                  <span data-i18n="sw">{room.badgeSw}</span>
                 </span>
               </div>
-            </a>
+              <div class="room-card-body">
+                <h4>
+                  <span data-i18n="en">{room.nameEn}</span>
+                  <span data-i18n="sw">{room.nameSw}</span>
+                </h4>
+                <p>
+                  <span data-i18n="en">{room.descEn}</span>
+                  <span data-i18n="sw">{room.descSw}</span>
+                </p>
+                <ul class="room-card-list">
+                  {room.highlightsEn.map((hEn, i) => (
+                    <li>
+                      <span data-i18n="en">{hEn}</span>
+                      <span data-i18n="sw">{room.highlightsSw[i]}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="#book-bar"
+                  data-pick-room={room.nameEn}
+                  class="button button-small button-blue room-card-action"
+                >
+                  <span data-i18n="en">Select {room.nameEn}</span>
+                  <span data-i18n="sw">Chagua {room.nameSw}</span>
+                  <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+                </a>
+              </div>
+            </article>
           ))}
         </div>
       </div>
     </section>
 
+    <!-- 4. Facilities & Surroundings Section: 4 Facility Cards + Curated Gallery Carousel -->
     <section class="discover-section section-pad" id="discover">
       <div class="shell">
         <div class="section-heading">
           <div>
             <p class="eyebrow"><span class="eyebrow-dot"></span>
-              <span data-i18n="en">More to enjoy</span>
-              <span data-i18n="sw">Zaidi ya kufurahia</span>
+              <span data-i18n="en">On-Site Facilities</span>
+              <span data-i18n="sw">Huduma Zilizopo Hotelini</span>
             </p>
             <h2>
-              <span data-i18n="en">Explore the hotel<br /><em>and its surroundings.</em></span>
-              <span data-i18n="sw">Gundua hoteli<br /><em>na mazingira yake.</em></span>
+              <span data-i18n="en">Hot pool, gym, dining<br /><em>&amp; everyday convenience.</em></span>
+              <span data-i18n="sw">Bwawa la maji ya moto, gym<br /><em>na huduma zote muhimu.</em></span>
             </h2>
           </div>
           <p class="section-heading-note">
-            <span data-i18n="en">Each photo opens a WhatsApp enquiry about what you see. Confirm opening hours, access and availability with the hotel.</span>
-            <span data-i18n="sw">Kila picha inafungua ujumbe wa WhatsApp kuhusu unachokiona. Thibitisha saa za kazi, matumizi na upatikanaji kwa hoteli.</span>
+            <span data-i18n="en">Everything on our Makambako compound is designed so you can swim, work out, dine, bank, and relax without leaving the hotel.</span>
+            <span data-i18n="sw">Huduma zote zipo ndani ya eneo moja—kuanzia bwawa la maji ya moto, Gym, mgahawa, juisi hadi Mini Bank na maegesho salama.</span>
           </p>
         </div>
 
-        <h3 class="experience-group-title">
-          <span data-i18n="en">Pool & outdoor space</span>
-          <span data-i18n="sw">Bwawa na sehemu za nje</span>
-        </h3>
-        <div class="experience-grid">
-          {poolPhotos.map((photo) => (
-            <a
-              class="experience-card"
-              href={whatsappUrl(`Hello Kas Classic Hotel, please confirm pool access, opening times and any fees. I am asking about: ${photo.enTitle}.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div class="experience-card-image">
-                <img src={photo.src} alt={`${photo.enTitle} at Kas Classic Hotel`} loading="lazy" decoding="async" />
-                <span class="experience-card-arrow" aria-hidden="true"><svg class="icon-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
-              </div>
-              <div class="experience-card-copy">
+        <div class="facility-cards-grid">
+          {hotelFacilities.map((fac) => (
+            <article class="facility-card">
+              <img class="facility-card-img" src={fac.image} alt={fac.titleEn} loading="lazy" decoding="async" />
+              <div class="facility-card-body">
+                <span class="facility-card-tag">
+                  <span data-i18n="en">{fac.tagEn}</span>
+                  <span data-i18n="sw">{fac.tagSw}</span>
+                </span>
                 <h3>
-                  <span data-i18n="en">{photo.enTitle}</span>
-                  <span data-i18n="sw">{photo.swTitle}</span>
+                  <span data-i18n="en">{fac.titleEn}</span>
+                  <span data-i18n="sw">{fac.titleSw}</span>
                 </h3>
                 <p>
-                  <span data-i18n="en">{photo.enDetail}</span>
-                  <span data-i18n="sw">{photo.swDetail}</span>
+                  <span data-i18n="en">{fac.descEn}</span>
+                  <span data-i18n="sw">{fac.descSw}</span>
                 </p>
-                <span class="experience-card-action">
-                  <span data-i18n="en">Ask about pool access</span>
-                  <span data-i18n="sw">Uliza kuhusu matumizi ya bwawa</span>
-                  <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-                </span>
               </div>
-            </a>
+            </article>
           ))}
         </div>
+      </div>
 
-        <h3 class="experience-group-title">
-          <span data-i18n="en">Around Kas Classic</span>
-          <span data-i18n="sw">Karibu na Kas Classic</span>
-        </h3>
-        <div class="experience-grid">
-          {hotelHighlights.map((photo) => (
-            <a
-              class="experience-card"
-              href={whatsappUrl(`Hello Kas Classic Hotel, ${photo.message}`)}
-              target="_blank"
-              rel="noopener noreferrer"
+      <div class="hotel-carousel" data-hotel-carousel tabindex="0" role="region" aria-roledescription="carousel" aria-label="Views around Kas Classic Hotel" data-label-en="Views around Kas Classic Hotel" data-label-sw="Mwonekano wa Kas Classic Hotel">
+        <div class="hotel-carousel-stage" aria-live="off">
+          {hotelPhotos.map((photo, index) => (
+            <figure
+              class:list={["hotel-carousel-slide", { "is-active": index === 0 }]}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} of ${hotelPhotos.length}: ${photo.enTitle}`}
+              aria-hidden={index !== 0}
             >
-              <div class="experience-card-image">
-                <img src={photo.src} alt={photo.enTitle} loading="lazy" decoding="async" />
-                <span class="experience-card-arrow" aria-hidden="true"><svg class="icon-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
-              </div>
-              <div class="experience-card-copy">
-                <h3>
+              <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+              <figcaption class="hotel-carousel-caption">
+                <strong>
                   <span data-i18n="en">{photo.enTitle}</span>
                   <span data-i18n="sw">{photo.swTitle}</span>
-                </h3>
-                <p>
+                </strong>
+                <span>
                   <span data-i18n="en">{photo.enDetail}</span>
                   <span data-i18n="sw">{photo.swDetail}</span>
-                </p>
-                <span class="experience-card-action">
-                  <span data-i18n="en">Ask for details</span>
-                  <span data-i18n="sw">Uliza maelezo</span>
-                  <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
                 </span>
-              </div>
-            </a>
+              </figcaption>
+            </figure>
           ))}
+          <button class="hotel-carousel-arrow prev" type="button" aria-label="Previous hotel view" data-label-en="Previous hotel view" data-label-sw="Mwonekano uliotangulia">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <button class="hotel-carousel-arrow next" type="button" aria-label="Next hotel view" data-label-en="Next hotel view" data-label-sw="Mwonekano unaofuata">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </div>
+        <div class="hotel-carousel-footer">
+          <div class="hotel-carousel-dots" role="group" aria-label="Choose a hotel view" data-label-en="Choose a hotel view" data-label-sw="Chagua mwonekano wa hoteli">
+            {hotelPhotos.map((photo, index) => (
+              <button
+                class="hotel-carousel-dot"
+                type="button"
+                aria-label={`Show ${photo.enTitle}`}
+                aria-current={index === 0 ? "true" : "false"}
+                data-label-en={`Show ${photo.enTitle}`}
+                data-label-sw={`Onyesha: ${photo.swTitle}`}
+                data-go={index}
+              ></button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="menu-section section-pad" id="menu">
+    <!-- 5. Signature Kitchen & Juice Bar Preview + Full Menu CTA -->
+    <section class="menu-entry-section section-pad" id="menu-preview">
       <div class="shell">
-        <div class="section-heading menu-heading">
+        <div class="section-heading">
           <div>
             <p class="eyebrow"><span class="eyebrow-dot"></span>
-              <span data-i18n="en">From the kitchen</span>
-              <span data-i18n="sw">Kutoka jikoni</span>
+              <span data-i18n="en">Restaurant &amp; Fresh Juice Bar</span>
+              <span data-i18n="sw">Mgahawa na Banda la Juisi Safi</span>
             </p>
             <h2>
-              <span data-i18n="en">See something you <em>like?</em></span>
-              <span data-i18n="sw">Umeona unachokipenda?</span>
+              <span data-i18n="en">A taste of our<br /><em>kitchen &amp; grill.</em></span>
+              <span data-i18n="sw">Ladha kutoka<br /><em>jikoni kwetu.</em></span>
             </h2>
           </div>
-          <p class="menu-intro">
-            <span data-i18n="en">Browse the dishes, see their prices and order directly on WhatsApp.</span>
-            <span data-i18n="sw">Tazama vyakula na bei, kisha agiza moja kwa moja kupitia WhatsApp.</span>
+          <p class="section-heading-note">
+            <span data-i18n="en">From charcoal-grilled Kuku Choma and Lake Victoria Sato fish to our signature Arabic date &amp; honey Kas Tende Juice.</span>
+            <span data-i18n="sw">Kuanzia Kuku Choma, Samaki Sato wa Nazi na Kuku Makange hadi Juisi maalum ya Tende na Asali.</span>
           </p>
         </div>
 
-        <p class="menu-category-nav-title">
-          <span data-i18n="en">Jump to a menu category</span>
-          <span data-i18n="sw">Chagua aina ya menyu</span>
-        </p>
-        <nav class="menu-category-nav" aria-label="Menu categories">
-          {menuCategories.map((category) => (
-            <a href={`#menu-${category.id}`}>
-              <span>
-                <span data-i18n="en">{category.name}</span>
-                <span data-i18n="sw">{category.swName}</span>
-              </span>
-              <span class="menu-category-nav-count">
-                {category.items.length}
-                <span data-i18n="en">{category.items.length === 1 ? " item" : " items"}</span>
-                <span data-i18n="sw">{category.items.length === 1 ? " kipengele" : " vipengele"}</span>
-              </span>
-            </a>
-          ))}
-        </nav>
-
-        <div class="menu-category-grid">
-          {menuCategories.map((category, index) => (
-            <section class="menu-category" id={`menu-${category.id}`} aria-labelledby={`menu-title-${category.id}`}>
-              <header class="menu-category-heading">
-                <span class="menu-category-number">{String(index + 1).padStart(2, "0")}</span>
-                <h3 id={`menu-title-${category.id}`}>
-                  <span data-i18n="en">{category.name}</span>
-                  <span data-i18n="sw">{category.swName}</span>
-                </h3>
-                <span class="menu-category-count">
-                  {category.items.length}
-                  <span data-i18n="en"> items</span>
-                  <span data-i18n="sw"> vyakula</span>
+        <div class="dish-preview-grid">
+          {signatureDishesPreview.map((dish) => (
+            <article class="dish-preview-card">
+              <img src={dish.image} alt={dish.nameEn} loading="lazy" decoding="async" />
+              <div class="dish-preview-body">
+                <span class="dish-preview-cat">
+                  <span data-i18n="en">{dish.categoryEn}</span>
+                  <span data-i18n="sw">{dish.categorySw}</span>
                 </span>
-              </header>
-              {category.note && (
-                <p class="menu-category-note">
-                  <span data-i18n="en">{category.note}</span>
-                  <span data-i18n="sw">{"swNote" in category ? category.swNote : category.note}</span>
-                </p>
-              )}
-              <ul class="menu-item-list">
-                {category.items.map((item) => (
-                  <li class="menu-item">
-                    <img
-                      class="menu-item-photo"
-                      src={item.image}
-                      alt={`${item.name} as pictured on the hotel menu`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="menu-item-details">
-                      <h4>{item.name}</h4>
-                      {"description" in item && item.description && <p>{item.description}</p>}
-                    </div>
-                    <div class="menu-item-action">
-                      <span class="menu-item-price">TZS {item.price}</span>
-                      <a
-                        class="menu-order-link"
-                        href={menuOrderUrl(item.name, item.price)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Order ${item.name} for TZS ${item.price} on WhatsApp`}
-                      >
-                        <span data-i18n="en">Order</span>
-                        <span data-i18n="sw">Agiza</span>
-                        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-                      </a>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
+                <h3>
+                  <span data-i18n="en">{dish.nameEn}</span>
+                  <span data-i18n="sw">{dish.nameSw}</span>
+                </h3>
+                <div class="dish-preview-footer">
+                  <span class="dish-preview-price">TZS {dish.price}</span>
+                  <a class="dish-preview-link" href="/menu/">
+                    <span data-i18n="en">Order</span>
+                    <span data-i18n="sw">Agiza</span>
+                    <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
-        <p class="menu-footnote">
-          <span data-i18n="en">Prices are shown as listed on the supplied menu. Please confirm current availability and which serving sizes the Chips Masala prices apply to.</span>
-          <span data-i18n="sw">Bei zimeonyeshwa kama zilivyo kwenye menyu iliyotolewa. Thibitisha upatikanaji na ukubwa unaolingana na bei za Chips Masala.</span>
-        </p>
+
+        <a class="menu-entry-link" href="/menu/">
+          <span class="menu-entry-copy">
+            <span class="menu-entry-eyebrow"><span data-i18n="en">Full Digital Menu &amp; Multi-Item Ordering</span><span data-i18n="sw">Menyu Kamili &amp; Kuagiza Vyakula Vingi</span></span>
+            <span class="menu-entry-title"><span data-i18n="en">Explore All 9 Menu Categories</span><span data-i18n="sw">Tazama Aina Zote 9 za Vyakula na Bei</span></span>
+            <span class="menu-entry-description">
+              <span data-i18n="en">Chips · Chicken · Kuku Choma · Beef · Spaghetti · Mchemsho · Sato Fish · Spiced Tea · Fresh Juices</span>
+              <span data-i18n="sw">Chipsi · Kuku · Kuku Choma · Nyama ya Ng'ombe · Spaghetti · Mchemsho · Samaki Sato · Chai · Juisi Safi</span>
+            </span>
+          </span>
+          <span class="menu-entry-action">
+            <span data-i18n="en">Open Full Menu</span><span data-i18n="sw">Fungua Menyu Kamili</span>
+            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+          </span>
+        </a>
       </div>
     </section>
 
+    <!-- 6. Events, Stay Packages & Guest Info Section (No Empty States!) -->
+    <section class="events-section section-pad" id="events" aria-labelledby="events-title">
+      <div class="shell">
+        <div class="section-heading events-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span>
+              <span data-i18n="en">Poolside Events &amp; Packages</span>
+              <span data-i18n="sw">Matukio ya Bwawani &amp; Vifurushi</span>
+            </p>
+            <h2 id="events-title">
+              <span data-i18n="en">Events, packages<br /><em>&amp; guest info.</em></span>
+              <span data-i18n="sw">Matukio, vifurushi<br /><em>na taarifa za wageni.</em></span>
+            </h2>
+          </div>
+          <p class="section-heading-note">
+            <span data-i18n="en">Join our poolside social nights or book our courtyard, restaurant, and heated pool area for your own celebration or corporate gathering.</span>
+            <span data-i18n="sw">Ungana nasi kwenye matukio ya kando ya bwawa au weka nafasi ya kuandaa sherehe yako ya birthday, send-off au mkutano hotelini.</span>
+          </p>
+        </div>
+
+        <div class="event-tabs" role="tablist" aria-label="Events and packages" data-label-en="Events and packages" data-label-sw="Matukio na vifurushi">
+          <button class="event-tab" type="button" role="tab" id="tab-events" aria-selected="true" aria-controls="panel-events" data-event-tab="events">
+            <span data-i18n="en">Poolside Events &amp; Hosting</span><span data-i18n="sw">Matukio &amp; Kukodi Ukumbi</span>
+          </button>
+          <button class="event-tab" type="button" role="tab" id="tab-offers" aria-selected="false" aria-controls="panel-offers" data-event-tab="offers" tabindex="-1">
+            <span data-i18n="en">Stay Packages &amp; Specials</span><span data-i18n="sw">Vifurushi vya Malazi</span>
+          </button>
+          <button class="event-tab" type="button" role="tab" id="tab-messages" aria-selected="false" aria-controls="panel-messages" data-event-tab="messages" tabindex="-1">
+            <span data-i18n="en">Guest Guide &amp; Services</span><span data-i18n="sw">Mwongozo wa Wageni</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Events & Private Event Hosting -->
+        <div class="event-panel" id="panel-events" role="tabpanel" aria-labelledby="tab-events" data-event-panel="events">
+          <div class="event-content">
+            <article class="event-history-card">
+              <img
+                class="event-history-poster"
+                src="/images/events/movie-night-by-the-pool-2026.jpeg"
+                alt="Poster for Movie Night by the Pool, presented by MK Movie Store and Kas Classic Hotel"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="event-history-copy">
+                <span class="event-status"><span data-i18n="en">Featured Poolside Event</span><span data-i18n="sw">Tukio Maalum la Bwawani</span></span>
+                <h3><span data-i18n="en">Movie Night by the Pool</span><span data-i18n="sw">Usiku wa Filamu Kando ya Bwawa</span></h3>
+                <p><span data-i18n="en">Hosted poolside at Kas Classic Hotel with MK Movie Store—featuring big-screen cinema, live BBQ &amp; Choma, swimming, photoshoot, and discounted room rates for attendees.</span><span data-i18n="sw">Tukio la kando ya bwawa Kas Classic Hotel pamoja na MK Movie Store—filamu kwenye projekta kubwa, Live BBQ &amp; Choma, kuogelea bure, picha na punguzo la vyumba.</span></p>
+                <ul class="event-perks">
+                  <li>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 8h5M2 12h20M2 16h5M17 8h5M17 16h5"/></svg>
+                    <span data-i18n="en">3 Movies on Big Projector</span><span data-i18n="sw">Filamu 3 Kwenye Projekta</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.5 2 2.5 3.8 2.5 5.5a2.5 2.5 0 1 1-5 0C9.5 6.8 10.5 5 12 3Z"/><path d="M4 14h16a6 6 0 0 1-16 0ZM8 20l-2 2M16 20l2 2"/></svg>
+                    <span data-i18n="en">Live BBQ &amp; Choma</span><span data-i18n="sw">Live BBQ &amp; Choma</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 15c1.7-1.5 3.3-1.5 5 0s3.3 1.5 5 0 3.3-1.5 5 0 3.3 1.5 5 0"/><path d="M2 19c1.7-1.5 3.3-1.5 5 0s3.3 1.5 5 0 3.3-1.5 5 0 3.3 1.5 5 0"/></svg>
+                    <span data-i18n="en">Free Swimming &amp; Photoshoot</span><span data-i18n="sw">Kuogelea &amp; Picha Bure</span>
+                  </li>
+                </ul>
+                <time datetime="2026-05-16">
+                  <span data-i18n="en">Saturday, May 16, 2026 · Entry TZS 35,000 (Includes 10,000 Coupon)</span>
+                  <span data-i18n="sw">Jumamosi, 16 Mei 2026 · Kiingilio TZS 35,000 (Kuponi ya 10,000 Bure)</span>
+                </time>
+              </div>
+            </article>
+
+            <div class="event-host-card">
+              <div>
+                <span class="event-status event-status-light"><span data-i18n="en">Private &amp; Corporate Venue</span><span data-i18n="sw">Ukumbi wa Sherehe na Mikutano</span></span>
+                <h3><span data-i18n="en">Host Your Event at Kas Classic</span><span data-i18n="sw">Andaa Sherehe au Tukio Lako Kwetu</span></h3>
+                <p><span data-i18n="en">Our poolside sunken lounge, restaurant, and courtyard are available for private bookings with custom Nyama Choma, buffet catering, and group room packages.</span><span data-i18n="sw">Eneo letu la kando ya bwawa na mgahawa linapatikana kwa kukodi kwa ajili ya sherehe binafsi pamoja na huduma ya chakula, Nyama Choma na vyumba vya wageni.</span></p>
+                <ul class="event-host-list">
+                  <li><span data-i18n="en">Birthday Parties, Graduations &amp; Bridal Showers</span><span data-i18n="sw">Sherehe za Birthday, Mahafali na Send-Off</span></li>
+                  <li><span data-i18n="en">Valentine's Dinners &amp; Poolside BBQ Nights</span><span data-i18n="sw">Usiku wa Valentine na Nyama Choma Kando ya Bwawa</span></li>
+                  <li><span data-i18n="en">Business Meetings &amp; Group Transit Dinners</span><span data-i18n="sw">Mikutano ya Kibiashara na Chakula cha Vikundi</span></li>
+                </ul>
+              </div>
+              <a
+                class="button button-red"
+                href={eventHostEn}
+                data-wa-en={eventHostEn}
+                data-wa-sw={eventHostSw}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span data-i18n="en">Inquire About Event Hosting</span><span data-i18n="sw">Uliza Kuhusu Kuandaa Tukio</span>
+                <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Stay Packages & Specials -->
+        <div class="event-panel" id="panel-offers" role="tabpanel" aria-labelledby="tab-offers" data-event-panel="offers" hidden>
+          <div class="event-packages-grid">
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">Couples &amp; Newlyweds</span><span data-i18n="sw">Wanandoa &amp; Maharusi</span></span>
+              <h3><span data-i18n="en">Honeymoon Room Experience</span><span data-i18n="sw">Kifurushi cha Honeymoon Room</span></h3>
+              <p><span data-i18n="en">Stay in our dedicated Honeymoon wing featuring a private balcony, crystal vanity setup, AC, heated pool access, and optional room dining service.</span><span data-i18n="sw">Kaa kwenye chumba chetu maalum cha Honeymoon chenye balkoni binafsi, AC, huduma ya bwawa la maji ya moto na chakula chumbani.</span></p>
+            </article>
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">Event Attendees</span><span data-i18n="sw">Wageni wa Matukio</span></span>
+              <h3><span data-i18n="en">Event-Night Room Discounts</span><span data-i18n="sw">Punguzo la Vyumba Siku za Matukio</span></h3>
+              <p><span data-i18n="en">Attending a poolside event like Movie Night by the Pool? Enjoy special discounted overnight room rates ("Offer ya Vyumba") when booking with your ticket.</span><span data-i18n="sw">Unafika kwenye tukio la bwawani? Pata punguzo maalum la bei ya chumba cha kulala siku ya tukio unapoweka nafasi mapema.</span></p>
+            </article>
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">Groups &amp; Business</span><span data-i18n="sw">Vikundi na Wafanyabiashara</span></span>
+              <h3><span data-i18n="en">Group &amp; Multi-Night Stays</span><span data-i18n="sw">Malazi ya Vikundi na Siku Nyingi</span></h3>
+              <p><span data-i18n="en">Travelling through Makambako with a team, family, or delegation? Contact our front desk for tailored multi-room rates and meal plans.</span><span data-i18n="sw">Unasafiri na timu ya kazi au familia kupitia Makambako? Wasiliana na mapokezi kwa bei maalum ya vyumba vingi na chakula.</span></p>
+            </article>
+          </div>
+          <a
+            class="button button-blue"
+            href={availabilityEn}
+            data-wa-en={availabilityEn}
+            data-wa-sw={availabilitySw}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="en">Ask the hotel about package rates</span><span data-i18n="sw">Uliza hoteli kuhusu bei za vifurushi</span>
+            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+          </a>
+        </div>
+
+        <!-- Tab 3: Guest Guide & Services -->
+        <div class="event-panel" id="panel-messages" role="tabpanel" aria-labelledby="tab-messages" data-event-panel="messages" hidden>
+          <div class="event-packages-grid">
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">Pool &amp; Gym Access</span><span data-i18n="sw">Matumizi ya Bwawa na Gym</span></span>
+              <h3><span data-i18n="en">Heated Swimming Pool &amp; Gym</span><span data-i18n="sw">Bwawa la Maji ya Moto na Gym</span></h3>
+              <p><span data-i18n="en">Our outdoor heated pool and upper-level fitness gym are open daily for resident hotel guests and approved event pass holders.</span><span data-i18n="sw">Bwawa letu la maji ya moto na Gym ya ghorofani zipo wazi kila siku kwa wageni wanaolala hotelini na wenye tiketi maalum.</span></p>
+            </article>
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">On-Site Banking &amp; Shop</span><span data-i18n="sw">Huduma za Kifedha na Duka</span></span>
+              <h3><span data-i18n="en">Mini Bank &amp; Mini Shop</span><span data-i18n="sw">Mini Bank na Mini Shop</span></h3>
+              <p><span data-i18n="en">Located right beside the hotel welcome gate in our paved courtyard for mobile money, banking transactions, and travel essentials.</span><span data-i18n="sw">Zipo ndani ya uwanja wa hoteli karibu na lango la kuingilia kwa ajili ya miamala ya kifedha na mahitaji muhimu ya safari.</span></p>
+            </article>
+            <article class="event-package-card">
+              <span class="event-status"><span data-i18n="en">Direct Reception</span><span data-i18n="sw">Mawasiliano ya Mapokezi</span></span>
+              <h3><span data-i18n="en">24/7 Front Desk &amp; Security</span><span data-i18n="sw">Mapokezi na Ulinzi Saa 24</span></h3>
+              <p><span data-i18n="en">Reach us anytime via WhatsApp at {hotelInfo.phoneDisplay} or call our signpost reception line at {hotelInfo.secondaryPhone}.</span><span data-i18n="sw">Wasiliana nasi muda wowote kwa WhatsApp {hotelInfo.phoneDisplay} au piga simu ya mapokezi {hotelInfo.secondaryPhone}.</span></p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Visit / Find Us Section with Real Signpost Photo + Live Google Map Embed -->
     <section class="visit-section section-pad" id="visit">
       <div class="shell visit-grid">
         <div class="visit-copy">
@@ -487,56 +769,92 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
             <span data-i18n="sw">Sehemu yako<br /><em>Makambako.</em></span>
           </h2>
           <p>
-            <span data-i18n="en">Find Kas Classic Hotel in Makambako Town, Njombe Region. Open the map to plan your route, then check Instagram for the latest hotel updates.</span>
-            <span data-i18n="sw">Ipate Kas Classic Hotel Makambako, Mkoa wa Njombe. Fungua ramani kupanga njia, kisha angalia Instagram kwa taarifa mpya za hoteli.</span>
+            <span data-i18n="en">Look for the red, blue, and white <strong>KAS CLASSIC HOTEL</strong> signpost in Makambako Town, Njombe Region, with spacious cabro-paved courtyard parking right out front.</span>
+            <span data-i18n="sw">Tafuta bango kubwa la <strong>KAS CLASSIC HOTEL</strong> mjini Makambako, Mkoa wa Njombe, lenye uwanja mkubwa wa maegesho ya magari mbele ya hoteli.</span>
           </p>
+
+          <div class="contact-direct-list">
+            <div class="contact-direct-row">
+              <strong>
+                <span class="contact-row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg>
+                </span>
+                <span data-i18n="en">WhatsApp &amp; Bookings:</span><span data-i18n="sw">WhatsApp na Kuweka Nafasi:</span>
+              </strong>
+              <a href={`tel:+${hotelInfo.whatsappNumber}`}>{hotelInfo.phoneDisplay}</a>
+            </div>
+            <div class="contact-direct-row">
+              <strong>
+                <span class="contact-row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7A2 2 0 0 1 22 16.9Z"/></svg>
+                </span>
+                <span data-i18n="en">Front Desk / Signboard Line:</span><span data-i18n="sw">Simu ya Mapokezi:</span>
+              </strong>
+              <a href={`tel:+${hotelInfo.secondaryPhoneClean}`}>{hotelInfo.secondaryPhone}</a>
+            </div>
+            <div class="contact-direct-row">
+              <strong>
+                <span class="contact-row-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.7" cy="6.8" r=".8" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span data-i18n="en">Instagram:</span><span data-i18n="sw">Instagram:</span>
+              </strong>
+              <a href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">@{hotelInfo.instagram.handle}</a>
+            </div>
+          </div>
+
           <div class="visit-actions">
             <a class="button button-blue" href="https://www.google.com/maps/search/?api=1&query=Kas+Classic+Hotel+Makambako+Tanzania" target="_blank" rel="noopener noreferrer">
-              <span data-i18n="en">Open map</span><span data-i18n="sw">Fungua ramani</span><svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+              <span data-i18n="en">Open in Google Maps</span><span data-i18n="sw">Fungua Google Maps</span><svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
             </a>
-            <a class="button button-outline" href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">
-              <span data-i18n="en">Ask on Instagram</span><span data-i18n="sw">Uliza Instagram</span><svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            <a
+              class="button button-outline"
+              href={contactEn}
+              data-wa-en={contactEn}
+              data-wa-sw={contactSw}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span data-i18n="en">Chat on WhatsApp</span><span data-i18n="sw">Chati WhatsApp</span><svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
             </a>
           </div>
         </div>
+
         <div class="location-card">
           <div class="location-card-top">
-            <span class="location-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            </span>
-            <span class="location-label">FIND US</span>
+            <div class="location-card-badge">
+              <span class="location-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              </span>
+              <span class="location-label">FIND US · MAKAMBAKO</span>
+            </div>
+            <span class="location-region-tag">NJOMBE REGION · TZ</span>
           </div>
-          <p class="location-town">Makambako<span>.</span></p>
-          <p class="location-region">NJOMBE REGION · TANZANIA</p>
-          <div class="location-map-art" aria-hidden="true">
-            <div class="map-grid"></div><div class="map-road road-one"></div><div class="map-road road-two"></div>
-            <div class="map-road road-three"></div><span class="map-pin"><i></i></span>
-            <span class="map-label map-label-town">MAKAMBAKO</span><span class="map-label map-label-hotel">KAS CLASSIC</span>
-          </div>
-          <p class="map-note">
-            <span data-i18n="en">Use the map search to confirm your route and the exact location.</span>
-            <span data-i18n="sw">Tumia utafutaji wa ramani kuthibitisha njia na mahali halisi.</span>
-          </p>
-        </div>
-      </div>
-    </section>
+          <p class="location-town">Kas Classic Hotel<span>.</span></p>
 
-    <section class="social-section">
-      <div class="shell social-inner">
-        <div class="social-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle class="social-mark-dot" cx="17.5" cy="6.5" r="1" /></svg>
-        </div>
-        <div class="social-copy">
-          <p class="social-kicker">FOLLOW ALONG</p>
-          <h2>@{hotelInfo.instagram.handle}</h2>
-          <p>
-            <span data-i18n="en">For the latest updates and booking enquiries, reach out through the hotel's Instagram profile.</span>
-            <span data-i18n="sw">Kwa taarifa mpya na maswali ya nafasi, wasiliana kupitia akaunti ya Instagram ya hoteli.</span>
+          <div class="location-showcase">
+            <figure class="location-signpost">
+              <img src="/images/hotel/outside-06.jpg" alt="Kas Classic Hotel roadside signpost and parking courtyard in Makambako" loading="lazy" decoding="async" />
+              <figcaption>
+                <span data-i18n="en">Roadside Signpost &amp; Parking</span>
+                <span data-i18n="sw">Bango la Barabarani &amp; Maegesho</span>
+              </figcaption>
+            </figure>
+            <div class="location-map-embed">
+              <iframe
+                title="Kas Classic Hotel Makambako Map"
+                src="https://www.google.com/maps?q=Makambako,+Njombe,+Tanzania&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+
+          <p class="map-note">
+            <span data-i18n="en">Conveniently located in Makambako Town for highway travelers, families, and business guests across the Njombe corridor.</span>
+            <span data-i18n="sw">Ipo katika mji wa Makambako— mahali rafiki kwa wasafiri wa barabara kuu, familia na wafanyabiashara.</span>
           </p>
         </div>
-        <a class="button button-white" href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">
-          <span data-i18n="en">Visit Instagram</span><span data-i18n="sw">Tembelea Instagram</span><svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-        </a>
       </div>
     </section>
   </main>
@@ -547,16 +865,22 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
         <img class="brand-logo" src="/images/hotel/hotel-logo.png" alt="Kas Classic Hotel" />
         <span class="brand-copy"><span class="brand-subtitle">HOTEL · MAKAMBAKO</span></span>
       </a>
-      <p>{location}</p>
-      <a href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer">@{hotelInfo.instagram.handle} <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></a>
+      <p>{location} · {hotelInfo.phoneDisplay} / {hotelInfo.secondaryPhone}</p>
+      <a href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer" aria-label={`Instagram @${hotelInfo.instagram.handle}`}>
+        <svg class="instagram-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.7" cy="6.8" r=".8" fill="currentColor" stroke="none" /></svg>
+        <span>@{hotelInfo.instagram.handle}</span>
+      </a>
     </div>
     <div class="shell footer-bottom">
       <span>© {new Date().getFullYear()} {hotelInfo.name}</span>
-      <a href="#home"><span data-i18n="en">Back to top</span><span data-i18n="sw">Rudi juu</span> ↑</a>
+      <a href="#home" class="back-top-link">
+        <span data-i18n="en">Back to top</span><span data-i18n="sw">Rudi juu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </a>
     </div>
   </footer>
 
-  <script is:inline>
+  <script is:inline define:vars={{ whatsappNumber: hotelInfo.whatsappNumber }}>
     (() => {
       const html = document.documentElement;
       const languageButtons = document.querySelectorAll("[data-set-lang]");
@@ -564,19 +888,42 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
       const nav = document.querySelector("#primary-navigation");
 
       function setLanguage(language) {
-        html.setAttribute("lang", language);
-        html.setAttribute("data-lang", language);
-        const isSwahili = language === "sw";
+        const normalized = language === "sw" ? "sw" : "en";
+        html.setAttribute("lang", normalized);
+        html.setAttribute("data-lang", normalized);
+        try {
+          localStorage.setItem("kas_lang", normalized);
+        } catch (e) {}
+
+        const isSwahili = normalized === "sw";
         languageButtons.forEach((button) => {
-          const selected = button.getAttribute("data-set-lang") === language;
+          const selected = button.getAttribute("data-set-lang") === normalized;
           button.setAttribute("aria-pressed", String(selected));
         });
+
+        document.querySelectorAll("[data-wa-en][data-wa-sw]").forEach((link) => {
+          const targetHref = link.getAttribute(isSwahili ? "data-wa-sw" : "data-wa-en");
+          if (targetHref) link.setAttribute("href", targetHref);
+        });
+
         if (menuToggle) {
           const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
           menuToggle.setAttribute("aria-label", isSwahili
             ? (isOpen ? "Funga menyu" : "Fungua menyu")
             : (isOpen ? "Close navigation" : "Open navigation"));
         }
+        document.querySelectorAll("[data-hotel-carousel] [data-label-en], [data-room-carousel] [data-label-en]").forEach((element) => {
+          const label = element.getAttribute(isSwahili ? "data-label-sw" : "data-label-en");
+          if (label) element.setAttribute("aria-label", label);
+        });
+        const eventTablist = document.querySelector(".event-tabs");
+        if (eventTablist) {
+          eventTablist.setAttribute("aria-label", isSwahili ? "Matukio na vifurushi" : "Events and packages");
+        }
+        document.querySelectorAll("option[data-label-en][data-label-sw]").forEach((opt) => {
+          const text = opt.getAttribute(isSwahili ? "data-label-sw" : "data-label-en");
+          if (text) opt.textContent = text;
+        });
       }
 
       languageButtons.forEach((button) => {
@@ -592,7 +939,8 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
         nav.classList.remove("is-open");
       }
 
-      menuToggle?.addEventListener("click", () => {
+      menuToggle?.addEventListener("click", (event) => {
+        event.stopPropagation();
         const isOpen = menuToggle.getAttribute("aria-expanded") !== "true";
         menuToggle.setAttribute("aria-expanded", String(isOpen));
         menuToggle.setAttribute("aria-label", html.lang === "sw"
@@ -602,11 +950,194 @@ const contactUrl = whatsappUrl("Hello Kas Classic Hotel, I would like to get in 
       });
 
       nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+      document.addEventListener("click", (event) => {
+        if (nav?.classList.contains("is-open") && !nav.contains(event.target) && !menuToggle?.contains(event.target)) {
+          closeMenu();
+        }
+      });
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 960) closeMenu();
+      });
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") closeMenu();
       });
 
-      setLanguage("en");
+      // Initialize Quick Availability Booking Bar Dates & Submission
+      const checkInInput = document.getElementById("bookCheckIn");
+      const checkOutInput = document.getElementById("bookCheckOut");
+      const roomSelect = document.getElementById("bookRoomType");
+      const guestsSelect = document.getElementById("bookGuests");
+      if (checkInInput && checkOutInput) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        checkInInput.value = today.toISOString().split("T")[0];
+        checkOutInput.value = tomorrow.toISOString().split("T")[0];
+      }
+
+      document.querySelectorAll("[data-pick-room]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const picked = btn.getAttribute("data-pick-room");
+          if (roomSelect && picked) {
+            for (let i = 0; i < roomSelect.options.length; i++) {
+              if (roomSelect.options[i].value.includes(picked.split(" ")[0])) {
+                roomSelect.selectedIndex = i;
+                break;
+              }
+            }
+            roomSelect.focus();
+          }
+        });
+      });
+
+      const quickBookingForm = document.getElementById("quickBookingForm");
+      if (quickBookingForm) {
+        quickBookingForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const isSw = html.getAttribute("data-lang") === "sw";
+          const checkIn = checkInInput?.value || "";
+          const checkOut = checkOutInput?.value || "";
+          const room = roomSelect?.value || "Deluxe Room";
+          const guests = guestsSelect?.value || "2 Guests";
+          const text = isSw
+            ? `Habari Kas Classic Hotel (Makambako)! Naomba kuuliza upatikanaji na bei ya chumba:\n\n• Chumba: ${room}\n• Wageni: ${guests}\n• Tarehe ya Kuingia: ${checkIn}\n• Tarehe ya Kuondoka: ${checkOut}\n\nTafadhali nijulishe upatikanaji.`
+            : `Hello Kas Classic Hotel (Makambako)! I would like to check room availability and rates:\n\n• Room: ${room}\n• Guests: ${guests}\n• Check-In: ${checkIn}\n• Check-Out: ${checkOut}\n\nPlease confirm availability.`;
+          window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+        });
+      }
+
+      // Initialize carousels
+      function initCarousel(rootSelector, slideSelector, dotSelector, trackSelector, intervalMs) {
+        const root = document.querySelector(rootSelector);
+        if (!root) return;
+        const track = trackSelector ? root.querySelector(trackSelector) : null;
+        const slides = Array.from(root.querySelectorAll(slideSelector));
+        const dots = Array.from(root.querySelectorAll(dotSelector));
+        let activeSlide = 0;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let hovered = false;
+        let focused = false;
+        let timer = 0;
+        let touchStartX = null;
+
+        function showSlide(index) {
+          activeSlide = (index + slides.length) % slides.length;
+          if (track) {
+            track.style.transform = `translateX(-${activeSlide * 100}%)`;
+          }
+          slides.forEach((slide, slideIndex) => {
+            slide.classList.toggle("is-active", slideIndex === activeSlide);
+            slide.setAttribute("aria-hidden", String(slideIndex !== activeSlide));
+            dots[slideIndex]?.setAttribute("aria-current", String(slideIndex === activeSlide));
+          });
+        }
+
+        function restartTimer() {
+          window.clearInterval(timer);
+          if (!reducedMotion && !hovered && !focused && !document.hidden) {
+            timer = window.setInterval(() => showSlide(activeSlide + 1), intervalMs);
+          }
+        }
+
+        root.querySelector(".prev")?.addEventListener("click", () => {
+          showSlide(activeSlide - 1);
+          restartTimer();
+        });
+        root.querySelector(".next")?.addEventListener("click", () => {
+          showSlide(activeSlide + 1);
+          restartTimer();
+        });
+        dots.forEach((dot) => dot.addEventListener("click", () => {
+          showSlide(Number(dot.dataset.go));
+          restartTimer();
+        }));
+        root.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            showSlide(activeSlide - 1);
+            restartTimer();
+          } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            showSlide(activeSlide + 1);
+            restartTimer();
+          }
+        });
+        root.addEventListener("pointerenter", (event) => {
+          if (event.pointerType !== "mouse") return;
+          hovered = true;
+          restartTimer();
+        });
+        root.addEventListener("pointerleave", (event) => {
+          if (event.pointerType !== "mouse") return;
+          hovered = false;
+          restartTimer();
+        });
+        root.addEventListener("focusin", (event) => {
+          focused = event.target instanceof HTMLElement && event.target.matches(":focus-visible");
+          restartTimer();
+        });
+        root.addEventListener("focusout", (event) => {
+          focused = event.relatedTarget instanceof HTMLElement
+            && root.contains(event.relatedTarget)
+            && event.relatedTarget.matches(":focus-visible");
+          restartTimer();
+        });
+        root.addEventListener("touchstart", (event) => {
+          window.clearInterval(timer);
+          touchStartX = event.changedTouches[0]?.clientX ?? null;
+        }, { passive: true });
+        root.addEventListener("touchend", (event) => {
+          const endX = event.changedTouches[0]?.clientX;
+          if (touchStartX !== null && endX !== undefined && Math.abs(endX - touchStartX) > 40) {
+            showSlide(activeSlide + (endX < touchStartX ? 1 : -1));
+          }
+          touchStartX = null;
+          restartTimer();
+        }, { passive: true });
+        root.addEventListener("touchcancel", () => {
+          touchStartX = null;
+          restartTimer();
+        }, { passive: true });
+        document.addEventListener("visibilitychange", restartTimer);
+        showSlide(0);
+        restartTimer();
+      }
+
+      initCarousel("[data-room-carousel]", ".stay-carousel-slide", ".stay-carousel-dot", ".stay-carousel-track", 3500);
+      initCarousel("[data-hotel-carousel]", ".hotel-carousel-slide", ".hotel-carousel-dot", null, 5000);
+
+      const eventTabs = Array.from(document.querySelectorAll("[data-event-tab]"));
+      const eventPanels = Array.from(document.querySelectorAll("[data-event-panel]"));
+      function selectEventTab(tab, moveFocus = false) {
+        eventTabs.forEach((item) => {
+          const selected = item === tab;
+          item.setAttribute("aria-selected", String(selected));
+          item.tabIndex = selected ? 0 : -1;
+        });
+        eventPanels.forEach((panel) => {
+          panel.hidden = panel.dataset.eventPanel !== tab.dataset.eventTab;
+        });
+        if (moveFocus) tab.focus();
+      }
+      eventTabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => selectEventTab(tab));
+        tab.addEventListener("keydown", (event) => {
+          let nextIndex = index;
+          if (event.key === "ArrowRight") nextIndex = (index + 1) % eventTabs.length;
+          else if (event.key === "ArrowLeft") nextIndex = (index - 1 + eventTabs.length) % eventTabs.length;
+          else if (event.key === "Home") nextIndex = 0;
+          else if (event.key === "End") nextIndex = eventTabs.length - 1;
+          else return;
+          event.preventDefault();
+          selectEventTab(eventTabs[nextIndex], true);
+        });
+      });
+
+      let initialLang = "en";
+      try {
+        initialLang = localStorage.getItem("kas_lang") || "en";
+      } catch (e) {}
+      setLanguage(initialLang);
     })();
   </script>
 </Layout>

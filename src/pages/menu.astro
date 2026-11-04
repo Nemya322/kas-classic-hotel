@@ -1,0 +1,191 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MenuContent from "../components/MenuContent.astro";
+import { hotelInfo } from "../data/hotelData";
+
+const location = `${hotelInfo.city}, ${hotelInfo.region}, ${hotelInfo.country}`;
+const whatsappUrl = (message: string) =>
+  `https://wa.me/${hotelInfo.whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+const orderHelpEn = whatsappUrl("Hello Kas Classic Hotel, I would like to place a food order from the menu.");
+const orderHelpSw = whatsappUrl("Habari Kas Classic Hotel, ningependa kuagiza chakula kutoka kwenye menyu.");
+---
+
+<Layout title="Our Menu | Kas Classic Hotel" description="Browse dishes and prices from the Kas Classic Hotel restaurant menu in Makambako, Tanzania, and order by WhatsApp.">
+  <a class="skip-link" href="#menu">
+    <span data-i18n="en">Skip to menu</span>
+    <span data-i18n="sw">Ruka hadi menyu</span>
+  </a>
+
+  <div class="topbar">
+    <div class="shell topbar-inner">
+      <p class="topbar-location">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        {location}
+      </p>
+      <p class="topbar-message">
+        <span data-i18n="en">Restaurant menu &amp; ordering · {hotelInfo.phoneDisplay}</span>
+        <span data-i18n="sw">Menyu ya mgahawa na oda · {hotelInfo.phoneDisplay}</span>
+      </p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a href="/" class="brand" aria-label="Kas Classic Hotel home">
+        <img class="brand-logo" src="/images/hotel/hotel-logo.png" alt="Kas Classic Hotel" />
+        <span class="brand-copy"><span class="brand-subtitle">HOTEL · MAKAMBAKO</span></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">
+        <span></span><span></span>
+      </button>
+      <nav class="main-nav" id="primary-navigation" aria-label="Main navigation">
+        <a href="/#stay"><span data-i18n="en">Stay</span><span data-i18n="sw">Malazi</span></a>
+        <a href="/#discover"><span data-i18n="en">Facilities</span><span data-i18n="sw">Huduma</span></a>
+        <a href="/menu/" aria-current="page"><span data-i18n="en">Menu</span><span data-i18n="sw">Menyu</span></a>
+        <a href="/#events"><span data-i18n="en">Events</span><span data-i18n="sw">Matukio</span></a>
+        <a href="/#visit"><span data-i18n="en">Find us</span><span data-i18n="sw">Mahali</span></a>
+        <a class="instagram-link" href={hotelInfo.instagram.profileUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.7" cy="6.8" r=".8" fill="currentColor" stroke="none" /></svg>
+        </a>
+        <a
+          class="button button-small button-red mobile-nav-cta"
+          href={orderHelpEn}
+          data-wa-en={orderHelpEn}
+          data-wa-sw={orderHelpSw}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span data-i18n="en">Order on WhatsApp</span>
+          <span data-i18n="sw">Agiza WhatsApp</span>
+          <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
+      </nav>
+      <div class="header-actions">
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-set-lang="sw" aria-pressed="false">SW</button>
+        </div>
+        <a
+          class="button button-small button-red"
+          href={orderHelpEn}
+          data-wa-en={orderHelpEn}
+          data-wa-sw={orderHelpSw}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span data-i18n="en">Order on WhatsApp</span>
+          <span data-i18n="sw">Agiza WhatsApp</span>
+          <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <MenuContent />
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-main">
+      <a href="/" class="brand footer-brand" aria-label="Kas Classic Hotel home">
+        <img class="brand-logo" src="/images/hotel/hotel-logo.png" alt="Kas Classic Hotel" />
+        <span class="brand-copy"><span class="brand-subtitle">HOTEL · MAKAMBAKO</span></span>
+      </a>
+      <p>{location}</p>
+      <a href="/" class="menu-back-link">
+        <span data-i18n="en">Back to hotel</span><span data-i18n="sw">Rudi hotelini</span>
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+    <div class="shell footer-bottom">
+      <span>© {new Date().getFullYear()} {hotelInfo.name}</span>
+      <a href="#menu" class="back-top-link">
+        <span data-i18n="en">Back to menu</span><span data-i18n="sw">Rudi kwenye menyu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script is:inline>
+    (() => {
+      const html = document.documentElement;
+      const languageButtons = document.querySelectorAll("[data-set-lang]");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const nav = document.querySelector("#primary-navigation");
+
+      function setLanguage(language) {
+        const normalized = language === "sw" ? "sw" : "en";
+        html.setAttribute("lang", normalized);
+        html.setAttribute("data-lang", normalized);
+        try {
+          localStorage.setItem("kas_lang", normalized);
+        } catch (e) {}
+
+        const isSwahili = normalized === "sw";
+        languageButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.getAttribute("data-set-lang") === normalized));
+        });
+
+        document.querySelectorAll("[data-wa-en][data-wa-sw]").forEach((link) => {
+          const targetHref = link.getAttribute(isSwahili ? "data-wa-sw" : "data-wa-en");
+          if (targetHref) link.setAttribute("href", targetHref);
+        });
+
+        document.querySelectorAll("option[data-label-en][data-label-sw]").forEach((opt) => {
+          const text = opt.getAttribute(isSwahili ? "data-label-sw" : "data-label-en");
+          if (text) opt.textContent = text;
+        });
+
+        if (menuToggle) {
+          const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+          menuToggle.setAttribute("aria-label", isSwahili
+            ? (isOpen ? "Funga menyu" : "Fungua menyu")
+            : (isOpen ? "Close navigation" : "Open navigation"));
+        }
+      }
+
+      languageButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setLanguage(button.getAttribute("data-set-lang") === "sw" ? "sw" : "en");
+        });
+      });
+
+      function closeMenu() {
+        if (!menuToggle || !nav) return;
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", html.lang === "sw" ? "Fungua menyu" : "Open navigation");
+        nav.classList.remove("is-open");
+      }
+
+      menuToggle?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = menuToggle.getAttribute("aria-expanded") !== "true";
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.setAttribute("aria-label", html.lang === "sw"
+          ? (isOpen ? "Funga menyu" : "Fungua menyu")
+          : (isOpen ? "Close navigation" : "Open navigation"));
+        nav?.classList.toggle("is-open", isOpen);
+      });
+
+      nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+      document.addEventListener("click", (event) => {
+        if (nav?.classList.contains("is-open") && !nav.contains(event.target) && !menuToggle?.contains(event.target)) {
+          closeMenu();
+        }
+      });
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 960) closeMenu();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      let initialLang = "en";
+      try {
+        initialLang = localStorage.getItem("kas_lang") || "en";
+      } catch (e) {}
+      setLanguage(initialLang);
+    })();
+  </script>
+</Layout>

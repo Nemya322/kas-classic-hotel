@@ -1,0 +1,272 @@
+---
+import { hotelInfo, menuCategories } from "../data/hotelData";
+
+const menuOrderUrlEn = (itemName: string, price: string) =>
+  `https://wa.me/${hotelInfo.whatsappNumber}?text=${encodeURIComponent(
+    `Hello Kas Classic Hotel, I would like to order ${itemName} (TZS ${price}). Please confirm availability.`,
+  )}`;
+
+const menuOrderUrlSw = (itemName: string, price: string) =>
+  `https://wa.me/${hotelInfo.whatsappNumber}?text=${encodeURIComponent(
+    `Habari Kas Classic Hotel, ningependa kuagiza ${itemName} (TZS ${price}). Tafadhali thibitisha upatikanaji.`,
+  )}`;
+---
+
+<section class="menu-section section-pad" id="menu">
+  <div class="shell">
+    <div class="section-heading menu-heading">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-dot"></span>
+          <span data-i18n="en">From the kitchen &amp; juice pavilion</span>
+          <span data-i18n="sw">Kutoka jikoni na banda la juisi</span>
+        </p>
+        <h1>
+          <span data-i18n="en">Our <em>Menu</em></span>
+          <span data-i18n="sw"><em>Menyu</em> Yetu</span>
+        </h1>
+      </div>
+      <p class="menu-intro">
+        <span data-i18n="en">Tap <strong>+ Add</strong> on multiple dishes to build a combined order, or tap <strong>Order</strong> to send a single dish directly on WhatsApp.</span>
+        <span data-i18n="sw">Bofya <strong>+ Ongeza</strong> kuchagua vyakula vingi kwa pamoja, au bofya <strong>Agiza</strong> kutuma chakula kimoja moja kwa moja WhatsApp.</span>
+      </p>
+    </div>
+
+    <div class="menu-toolbar">
+      <p class="menu-category-nav-title">
+        <span data-i18n="en">Jump to a menu category:</span>
+        <span data-i18n="sw">Chagua aina ya menyu:</span>
+      </p>
+      <div class="menu-side-picker">
+        <label for="sideDishSelect">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2v7c0 1.7 1.3 3 3 3v10M6 2v20M9 2v7c0 1.7-1.3 3-3 3"/><path d="M18 2v20M18 2c-2.8 0-4 2.5-4 6v4h4"/></svg>
+          <span data-i18n="en">Preferred side (for Chicken &amp; Fish):</span>
+          <span data-i18n="sw">Chaguo la pembeni (kwa Kuku &amp; Samaki):</span>
+        </label>
+        <select id="sideDishSelect">
+          <option value="Chips" data-label-en="Chips (French Fries)" data-label-sw="Chipsi">Chips (French Fries)</option>
+          <option value="Ugali" data-label-en="Ugali" data-label-sw="Ugali">Ugali</option>
+          <option value="Rice" data-label-en="Rice (Wali)" data-label-sw="Wali">Rice (Wali)</option>
+          <option value="Green Banana" data-label-en="Green Banana (Ndizi)" data-label-sw="Ndizi">Green Banana (Ndizi)</option>
+          <option value="Spaghetti" data-label-en="Spaghetti" data-label-sw="Spaghetti">Spaghetti</option>
+        </select>
+      </div>
+    </div>
+
+    <nav class="menu-category-nav" aria-label="Menu categories">
+      {menuCategories.map((category) => (
+        <a href={`#menu-${category.id}`}>
+          <span>
+            <span data-i18n="en">{category.name}</span>
+            <span data-i18n="sw">{category.swName}</span>
+          </span>
+          <span class="menu-category-nav-count">
+            {category.items.length}
+            <span data-i18n="en">{category.items.length === 1 ? " item" : " items"}</span>
+            <span data-i18n="sw">{category.items.length === 1 ? " chakula" : " vyakula"}</span>
+          </span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="menu-category-grid">
+      {menuCategories.map((category, index) => (
+        <section class="menu-category" id={`menu-${category.id}`} aria-labelledby={`menu-title-${category.id}`}>
+          <header class="menu-category-heading">
+            <span class="menu-category-number">{String(index + 1).padStart(2, "0")}</span>
+            <h2 id={`menu-title-${category.id}`}>
+              <span data-i18n="en">{category.name}</span>
+              <span data-i18n="sw">{category.swName}</span>
+            </h2>
+            <span class="menu-category-count">
+              {category.items.length}
+              <span data-i18n="en">{category.items.length === 1 ? " item" : " items"}</span>
+              <span data-i18n="sw">{category.items.length === 1 ? " chakula" : " vyakula"}</span>
+            </span>
+          </header>
+          {category.note && (
+            <p class="menu-category-note">
+              <span data-i18n="en">{category.note}</span>
+              <span data-i18n="sw">{category.swNote ?? category.note}</span>
+            </p>
+          )}
+          <ul class="menu-item-list">
+            {category.items.map((item) => {
+              const swItemName = item.swName ?? item.name;
+              const orderEn = menuOrderUrlEn(item.name, item.price);
+              const orderSw = menuOrderUrlSw(swItemName, item.price);
+              return (
+                <li class="menu-item">
+                  <img
+                    class="menu-item-photo"
+                    src={item.image}
+                    alt={`${item.name} as pictured on the hotel menu`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="menu-item-details">
+                    <h3>
+                      <span data-i18n="en">{item.name}</span>
+                      <span data-i18n="sw">{swItemName}</span>
+                    </h3>
+                    {item.description && (
+                      <p>
+                        <span data-i18n="en">{item.description}</span>
+                        <span data-i18n="sw">{item.swDescription ?? item.description}</span>
+                      </p>
+                    )}
+                    {item.variants && (
+                      <div class="variant-group">
+                        {item.variants.map((v) => (
+                          <button
+                            type="button"
+                            class="menu-add-btn"
+                            data-add-item={`${item.name} (${v.labelEn})`}
+                            data-add-item-sw={`${swItemName} (${v.labelSw})`}
+                            data-add-price={v.numericPrice}
+                            data-has-side="false"
+                          >
+                            + <span data-i18n="en">{v.labelEn}</span><span data-i18n="sw">{v.labelSw}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div class="menu-item-action">
+                    <span class="menu-item-price">TZS {item.price}</span>
+                    <div class="menu-item-buttons">
+                      {!item.variants && (
+                        <button
+                          type="button"
+                          class="menu-add-btn"
+                          data-add-item={item.name}
+                          data-add-item-sw={swItemName}
+                          data-add-price={item.numericPrice}
+                          data-has-side={item.hasSideChoice ? "true" : "false"}
+                        >
+                          <span data-i18n="en">+ Add</span>
+                          <span data-i18n="sw">+ Ongeza</span>
+                        </button>
+                      )}
+                      <a
+                        class="menu-order-link"
+                        href={orderEn}
+                        data-wa-en={orderEn}
+                        data-wa-sw={orderSw}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Order ${item.name} for TZS ${item.price} on WhatsApp`}
+                      >
+                        <span data-i18n="en">Order</span>
+                        <span data-i18n="sw">Agiza</span>
+                        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+    <p class="menu-footnote">
+      <span data-i18n="en">Prices are shown in Tanzanian Shillings (TZS) as listed on the hotel menu. Tap "+ Add" to combine multiple items or "Order" to confirm availability directly on WhatsApp ({hotelInfo.phoneDisplay}).</span>
+      <span data-i18n="sw">Bei zimeonyeshwa kwa Shilingi za Kitanzania (TZS) kama zilivyo kwenye menyu ya hoteli. Bofya "+ Ongeza" kuchanganya vyakula vingi au "Agiza" kuagiza moja kwa moja WhatsApp ({hotelInfo.phoneDisplay}).</span>
+    </p>
+  </div>
+</section>
+
+<!-- Floating Multi-Item Order Cart Bar -->
+<div class="order-cart-bar" id="orderCartBar" hidden aria-live="polite">
+  <div class="order-cart-summary">
+    <span class="order-cart-title" id="orderCartTitle">0 items · TZS 0</span>
+    <span class="order-cart-items" id="orderCartItems"></span>
+  </div>
+  <div class="order-cart-actions">
+    <button type="button" class="order-cart-clear" id="orderCartClear">
+      <span data-i18n="en">Clear</span>
+      <span data-i18n="sw">Futa</span>
+    </button>
+    <button type="button" class="button button-small button-red" id="orderCartSubmit">
+      <span data-i18n="en">Send Order on WhatsApp</span>
+      <span data-i18n="sw">Tuma Oda WhatsApp</span>
+      <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+    </button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ whatsappNumber: hotelInfo.whatsappNumber }}>
+  (() => {
+    const cart = [];
+    const cartBar = document.getElementById("orderCartBar");
+    const cartTitle = document.getElementById("orderCartTitle");
+    const cartItemsEl = document.getElementById("orderCartItems");
+    const cartClear = document.getElementById("orderCartClear");
+    const cartSubmit = document.getElementById("orderCartSubmit");
+    const sideSelect = document.getElementById("sideDishSelect");
+
+    function renderCart() {
+      if (!cartBar || !cartTitle || !cartItemsEl) return;
+      if (cart.length === 0) {
+        cartBar.hidden = true;
+        return;
+      }
+      cartBar.hidden = false;
+      const isSw = document.documentElement.getAttribute("data-lang") === "sw";
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const formattedTotal = total.toLocaleString("en-US");
+
+      cartTitle.textContent = isSw
+        ? `Vyakula ${count} · Jumla: TZS ${formattedTotal}`
+        : `${count} ${count === 1 ? "item" : "items"} · Total: TZS ${formattedTotal}`;
+
+      cartItemsEl.textContent = cart
+        .map((c) => `${c.qty}x ${isSw ? c.nameSw : c.nameEn}${c.side ? ` (+ ${c.side})` : ""}`)
+        .join(", ");
+    }
+
+    document.querySelectorAll("[data-add-item]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const nameEn = btn.getAttribute("data-add-item") || "";
+        const nameSw = btn.getAttribute("data-add-item-sw") || nameEn;
+        const price = Number(btn.getAttribute("data-add-price") || 0);
+        const hasSide = btn.getAttribute("data-has-side") === "true";
+        const side = hasSide && sideSelect ? sideSelect.value : "";
+        const key = `${nameEn}|${side}`;
+
+        const existing = cart.find((item) => item.key === key);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ key, nameEn, nameSw, price, side, qty: 1 });
+        }
+        renderCart();
+      });
+    });
+
+    cartClear?.addEventListener("click", () => {
+      cart.length = 0;
+      renderCart();
+    });
+
+    cartSubmit?.addEventListener("click", () => {
+      if (cart.length === 0) return;
+      const isSw = document.documentElement.getAttribute("data-lang") === "sw";
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString("en-US");
+      const lines = cart.map(
+        (c) =>
+          `• ${c.qty}x ${isSw ? c.nameSw : c.nameEn}${c.side ? ` (${c.side})` : ""} — TZS ${(c.price * c.qty).toLocaleString("en-US")}`,
+      );
+      const msg = isSw
+        ? `Habari Kas Classic Hotel! Ningependa kuagiza vyakula vifuatavyo:\n\n${lines.join("\n")}\n\nJumla: TZS ${total}\nTafadhali thibitisha oda yangu.`
+        : `Hello Kas Classic Hotel! I would like to place the following food order:\n\n${lines.join("\n")}\n\nTotal: TZS ${total}\nPlease confirm availability.`;
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+    });
+
+    // Re-render cart labels when language changes
+    document.querySelectorAll("[data-set-lang]").forEach((btn) => {
+      btn.addEventListener("click", () => setTimeout(renderCart, 20));
+    });
+  })();
+</script>
